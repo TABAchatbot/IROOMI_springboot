@@ -63,6 +63,11 @@
             <scope>system</scope>
             <systemPath>${basedir}/libs/tibero6-jdbc-14.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>io.github.flashvayne</groupId>
+            <artifactId>chatgpt-spring-boot-starter</artifactId>
+            <version>1.0.4</version>
+        </dependency>
     </dependencies>
 
     <build>
