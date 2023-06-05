@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ChatGPT Client</title>
+    <style>
+      .container {
+        margin: 20px;
+      }
+
+      .message {
+        margin-bottom: 10px;
+      }
+
+      .user-message {
+        color: blue;
+      }
+
+      .assistant-message {
+        color: green;
+      }
+    </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ChatGPT Client</h1>
+    <div id="chat-container"></div>
+    <input type="text" id="message-input" placeholder="Enter your message">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    const chatContainer = document.getElementById("chat-container");
+    const messageInput = document.getElementById("message-input");
+
+    function sendMessage() {
+      const message = messageInput.value;
+      if (message.trim() === "") {
+        return;
+      }
+
+      appendMessage("user", message);
+      getChatGptResponse(message)
+              .then(response => {
+                appendMessage("assistant", response);
+              })
+              .catch(error => {
+                console.error("Error occurred:", error);
+                appendMessage("assistant", "Error occurred while processing the request.");
+              });
+
+      messageInput.value = "";
+    }
+
+    function appendMessage(role, content) {
+      const messageElement = document.createElement("div");
+      messageElement.classList.add("message", role + "-message");
+      messageElement.innerText = "[" + role + "]: " + content;
+      chatContainer.appendChild(messageElement);
+    }
+
+    function getChatGptResponse(message) {
+      return fetch("/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message })
+      })
+              .then(response => response.text());
+    }
+  </script>
+</body>
+</html>
