@@ -1,91 +1,106 @@
 package com.example.demo1.Service;
 
 import com.example.demo1.Dao.TodolistMapper;
-import com.example.demo1.Dao.UseMapper;
-import com.example.demo1.Dto.TodolistDto;
-import com.example.demo1.Dto.UserDto;
+import com.example.demo1.Dao.WeeklyplanMapper;
+import com.example.demo1.Dto.StudyPlan;
+import com.example.demo1.Dto.TodoList;
+import com.example.demo1.Dto.Task;
+import com.example.demo1.Dto.WeeklyPlan;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ChatGPTResponseService {
 
-    @Autowired
+    @Autowired //TodolistMapper 매핑
     private TodolistMapper todolistMapper;
 
-    //아래 메써드에서 input은 chatGPTresponse 값
+    @Autowired //WeeklyplanMapper 매핑
+    private WeeklyplanMapper weeklyplanMapper;
+
+    //Weekly_plan 만드는 method
+    public boolean createWeeklyPlan(String jsonData){
+        System.out.println(jsonData); //출력테스트용
+
+        // 1. JSON 문자열을 WeeklyPlan 객체로 변환
+        Type type = new TypeToken<Map<String, List<StudyPlan>>>() {}.getType();
+        Map<String, List<StudyPlan>> studyPlanMap = new Gson().fromJson(jsonData, type);
+
+        for (Map.Entry<String, List<StudyPlan>> entry : studyPlanMap.entrySet()) {
+            String weekNo = entry.getKey();
+            List<StudyPlan> studyPlans = entry.getValue();
+
+            for (StudyPlan studyPlan : studyPlans) {
+                String weekDay = studyPlan.getDay();
+                String topic = studyPlan.getTopic();
+                int estimatedTime = studyPlan.getStudy_hours();
+
+                WeeklyPlan weeklyplan = new WeeklyPlan();
+                weeklyplan.setWeekNo(weekNo);
+                weeklyplan.setWeekDay(weekDay);
+                weeklyplan.setTopic(topic);
+                weeklyplan.setEstimatedTime(estimatedTime);
+
+                weeklyplanMapper.InsertWeeklyplan(weeklyplan);
+            }
+        }
+
+        System.out.println("Data inserted successfully.");
+
+        return true;
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //TODOLIST 만드는 method
     public boolean createTodolist(String input){
 
         System.out.println(input); //출력테스트용
-        //todolistMapper.InsertTodolist(dto);
-        System.out.println("----------row 분리 시작----------------");
 
-        // 입력된 문자열을 줄바꿈을 기준으로 행(row)으로 분리
-        String[] rows = input.split("\n");
+        //------------실제코드-------------------------------
+        // 1. JSON 파싱하여 Java 객체로 변환
+        TodoList todoList = parseJsonToTodoList(input);
 
-        for(int i = 0; i < rows.length; i++){
-
-            System.out.println(rows[i]);
-
-            String[] columns = rows[i].split("\\|");
-            for(int j=0; j<columns.length; j++){
-                System.out.println(columns[j].trim());
-                System.out.println(j);
-            }
-            System.out.println("=================================");
+        // 2. Tibero DB에 Java 객체 저장
+        List<Task> tasks = todoList.getTasks();
+        for (Task task : tasks) {
+            todolistMapper.InsertTodolist(task);
         }
 
-        /*
-        // 행(row)을 처리하여 데이터베이스에 저장
-        for (int i = 2; i < rows.length; i++) {
-            String[] columns = rows[i].split("|");
-            String todo = columns[1].trim();
-            String duration = columns[2].trim();
-            String priority = columns[3].trim();
-
-            // Todo 객체 생성
-            TodolistDto dto = new TodolistDto();
-            dto.setTodoNo(1) ; //test값
-            dto.setMemNo(1); //test값
-            dto.setPriority(Integer.parseInt(priority));
-            dto.setTodoDetail(todo);
-            dto.setDuration(Integer.parseInt(duration));
-
-            //이런식으로...// 데이터베이스에 입력
-            todolistMapper.InsertTodolist(dto);
-        }
-        */
 
         return true;
     }
-
-    //밑에는 참고할 코드,,,, 참고하고 삭제하기
-    //application 테스트시에는 잠시 주석처리 해놓기
-    /*
-
-    @Override
-    public boolean join(UserDto dto){
-        UserDto user = userMapper.selectOneUser(dto.getId());
-
-        if (user != null)
-        {
-            return false;
-        }
-        else
-        {
-            userMapper.InsertUser(dto);
-            return true;
+    private static TodoList parseJsonToTodoList(String json) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(json, TodoList.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
         }
     }
-
-    @Override
-    public List<UserDto> getUserList(){
-        return userMapper.selectAllUser();
-    }
-
-    */
 
 
 }

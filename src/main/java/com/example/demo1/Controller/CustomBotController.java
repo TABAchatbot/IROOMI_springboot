@@ -36,7 +36,8 @@ public class CustomBotController {
         ChatGPTResponse chatGPTResponse = template.postForObject(apiURL, request, ChatGPTResponse.class);
 
         //DB : chatGPTResponse 값을 데이터베이스에 저장
-        responseService.createTodolist(chatGPTResponse.getChoices().get(0).getMessage().getContent());
+        //responseService.createTodolist(chatGPTResponse.getChoices().get(0).getMessage().getContent());
+        responseService.createWeeklyPlan(chatGPTResponse.getChoices().get(0).getMessage().getContent());
 
         return chatGPTResponse.getChoices().get(0).getMessage().getContent();
 
