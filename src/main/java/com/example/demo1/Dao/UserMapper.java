@@ -9,4 +9,5 @@ import org.apache.ibatis.annotations.Select;
 public interface UserMapper {
     @Select("SELECT * FROM MEM_INFO WHERE user_id=#{Id}")
     User findByUserid(String Id);
+
 }
