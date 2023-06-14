@@ -51,9 +51,9 @@ public class JwtUtility {
     }
 
     // 주어진 토큰에서 사용자명(subject)을 추출하여 반환
-    public String getUsernameFromToken(String token) {
+    public String getUseridFromToken(String token) {
         Claims claims = parseToken(token);
-        return claims.getSubject();
+        return (String) claims.get("userId"); //claims.getSubject();
     }
 
     // 사용자 ID와 사용자명을 기반으로 Refresh Token을 생성

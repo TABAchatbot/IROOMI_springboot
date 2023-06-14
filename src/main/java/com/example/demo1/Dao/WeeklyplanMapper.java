@@ -9,8 +9,9 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface WeeklyplanMapper {
 
-    @Insert("INSERT INTO WEEKLY_PLAN (weekly_plan_no, mem_no, week_no, week_day, topic, estimated_time) VALUES (weekly_plan_no_seq.NEXTVAL, mem_no_seq.NEXTVAL, #{weekNo}, #{weekDay}, #{topic}, #{estimatedTime})")
-    //mem_no 값은 고쳐야함... 아직 test 값
+    @Insert("INSERT INTO WEEKLY_PLAN (weekly_plan_no, mem_id, week_no, week_day, topic, estimated_time, created_time) VALUES (weekly_plan_no_seq.NEXTVAL, #{id}, #{weekNo}, #{weekDay}, #{topic}, #{estimatedTime}, SYSTIMESTAMP )")
 
-    void InsertWeeklyplan(WeeklyPlan weeklyPlan);
+
+
+    void InsertWeeklyplan(WeeklyPlan weeklyPlan); // weeklyPlan 에 멤버변수 id값 넣어야 할듯 ....
 }

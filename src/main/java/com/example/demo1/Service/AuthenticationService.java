@@ -22,16 +22,24 @@ public class AuthenticationService {
         User user = userMapper.findByUserid(id);
         if (user != null && pw.equals(user.getPw())) {
             String token = jwtUtility.generateToken(user.getId(), user.getUsername());
+
+            //테스트용
+            System.out.println("토큰이름 .........");
+            System.out.println(token);
+
+
             return token;
+        }else{
+            throw new BadCredentialsException("Invalid username or password");
         }
-        throw new BadCredentialsException("Invalid username or password");
-        //AuthenticationException
+            //AuthenticationException}
+
     }
 
     // Access Token의 유효성을 검증하는 method
     public String verifyAccessToken(String token) {
         if (jwtUtility.validateToken(token)) {
-            return jwtUtility.getUsernameFromToken(token);
+            return jwtUtility.getUseridFromToken(token);
         }
         throw new BadCredentialsException("Invalid access token");
     }

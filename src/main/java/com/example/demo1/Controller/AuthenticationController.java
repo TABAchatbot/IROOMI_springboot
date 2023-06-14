@@ -32,7 +32,8 @@ public class AuthenticationController {
     public ResponseEntity<?> verifyAccessToken(@RequestBody String accessToken) {
         try {
             String username = authenticationService.verifyAccessToken(accessToken);
-            // Access Token이 유효한 경우에 대한 처리 추가
+            // Access Token이 유효한 경우에 대한 처리 추가......
+
             return ResponseEntity.ok().build();
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());

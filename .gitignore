@@ -32,3 +32,5 @@ build/
 ### VS Code ###
 .vscode/
 
+# application.properties 파일 추가
+/src/main/resources/application.properties

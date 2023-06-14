@@ -2,14 +2,21 @@ package com.example.demo1.Dto;
 
 public class Task {
 
+    private String id; // 추가함.... 고객번호로 바꿀 수도 있음 ...
     private String task;
-
-    private int estimated_week;
-
     private String priority;
+    private int estimated_week;
 
 
     //Getter & Setter
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getTask() {
         return task;
     }
