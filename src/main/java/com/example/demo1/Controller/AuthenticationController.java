@@ -4,10 +4,14 @@ import com.example.demo1.Dto.AuthenticationRequest;
 import com.example.demo1.Dto.AuthenticationResponse;
 import com.example.demo1.Service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.servlet.http.Cookie;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
+
+
 
 @RestController
 @RequestMapping("/auth")
@@ -20,11 +24,15 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationRequest request) {
         try {
+            // 사용자 인증
             String token = authenticationService.authenticateUser(request.getId(), request.getPassword());
-            AuthenticationResponse response = new AuthenticationResponse(token);
-            return ResponseEntity.ok(response);
+
+            // 토큰 생성에 성공한 경우
+            return ResponseEntity.ok()
+                    .body(new AuthenticationResponse(token)); // 토큰을 응답으로 반환
+
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
 

@@ -66,8 +66,9 @@ public class ChatGPTResponseService {
     }
 
     /* Weekly_plan 만드는 method */
-    public boolean createWeeklyPlan(String jsonData){
-        System.out.println(jsonData); //출력테스트용
+    public boolean createWeeklyPlan(String jsonData, String id){
+        System.out.println(jsonData);  //출력테스트용
+        System.out.println(id);
 
         // 1. JSON 문자열을 WeeklyPlan 객체로 변환
         Type type = new TypeToken<Map<String, List<StudyPlan>>>() {}.getType();
@@ -83,6 +84,7 @@ public class ChatGPTResponseService {
                 int estimatedTime = studyPlan.getStudy_hours();
 
                 WeeklyPlan weeklyplan = new WeeklyPlan();
+                weeklyplan.setId(id);
                 weeklyplan.setWeekNo(weekNo);
                 weeklyplan.setWeekDay(weekDay);
                 weeklyplan.setTopic(topic);

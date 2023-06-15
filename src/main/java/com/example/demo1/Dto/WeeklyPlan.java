@@ -6,12 +6,22 @@ import java.util.List;
 import java.util.Map;
 
 public class WeeklyPlan {
+
+    private String id;
     private String weekNo;
     private String weekDay;
     private String topic;
     private int estimatedTime;
 
     //Getter & Setter
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getWeekNo() {
         return weekNo;
     }

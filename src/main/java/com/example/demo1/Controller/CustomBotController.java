@@ -6,8 +6,6 @@ import com.example.demo1.Service.AuthenticationService;
 import com.example.demo1.Service.ChatGPTResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import com.example.demo1.Dto.Task;
@@ -34,18 +32,22 @@ public class CustomBotController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    /*원래 있던 GetMapping 함수*/
+
 
 
 
     /*바꾼 PostMapping 함수*/
 
     @PostMapping("/todo-list")
-    public String createTodolist(@RequestBody Map<String, String> requestData) {
+    public String createTodolist(@RequestBody Map<String, String> requestData, @RequestHeader("token") String token ) {
         String prompt = requestData.get("prompt");
+        String id = authenticationService.verifyAccessToken(token);
 
         //출력테스트용
+        System.out.println("token: "+ token);
+        System.out.println("id: " + id);
         System.out.println("prompt: " + prompt);
+
 
 
         ChatGPTRequest request = new ChatGPTRequest(model, prompt);
@@ -55,7 +57,7 @@ public class CustomBotController {
         System.out.println("response : "+ chatGPTResponse.getChoices().get(0).getMessage().getContent());
 
         //DB: chatGPTResponse 값을 데이터베이스에 저장하는 메소드
-        String id = "TEST_ID";
+        id = "TEST_ID";
         responseService.createTodolist(chatGPTResponse.getChoices().get(0).getMessage().getContent(), id);
 
         return chatGPTResponse.getChoices().get(0).getMessage().getContent();
@@ -112,7 +114,7 @@ public class CustomBotController {
         ChatGPTResponse chatGPTResponse = template.postForObject(apiURL, request, ChatGPTResponse.class);
 
         //DB : chatGPTResponse 값을 데이터베이스에 저장하는 메쏘드
-        responseService.createWeeklyPlan(chatGPTResponse.getChoices().get(0).getMessage().getContent());
+        responseService.createWeeklyPlan(chatGPTResponse.getChoices().get(0).getMessage().getContent(), id);
 
         return chatGPTResponse.getChoices().get(0).getMessage().getContent();
 

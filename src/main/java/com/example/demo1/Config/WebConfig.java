@@ -11,9 +11,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000") // React 프로젝트의 도메인 또는 포트를 여기에 추가
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("*");
+                .allowedOrigins("http://localhost:3000") // 프론트엔드 애플리케이션의 도메인
+                .allowedMethods("GET", "POST", "PUT", "DELETE") // 허용할 HTTP 메서드
+                .allowedHeaders("*") // 요청 헤더 허용
+                .allowCredentials(true); // 인증 정보 허용;
+
     }
 
 
