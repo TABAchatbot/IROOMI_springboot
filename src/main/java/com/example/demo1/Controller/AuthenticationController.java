@@ -2,10 +2,11 @@ package com.example.demo1.Controller;
 
 import com.example.demo1.Dto.AuthenticationRequest;
 import com.example.demo1.Dto.AuthenticationResponse;
+import com.example.demo1.Dto.SignUpDto;
+import com.example.demo1.Dto.User;
 import com.example.demo1.Service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.servlet.http.Cookie;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -31,6 +32,18 @@ public class AuthenticationController {
             return ResponseEntity.ok()
                     .body(new AuthenticationResponse(token)); // 토큰을 응답으로 반환
 
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup(@RequestBody User user) {
+        try {
+            //회원가입
+            authenticationService.createUser(user);
+
+            return ResponseEntity.ok().build();
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }

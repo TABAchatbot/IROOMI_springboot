@@ -3,6 +3,7 @@ package com.example.demo1.Service;
 
 import com.example.demo1.Config.JwtUtil;
 import com.example.demo1.Dao.UserMapper;
+import com.example.demo1.Dto.SignUpDto;
 import com.example.demo1.Dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -37,6 +38,12 @@ public class AuthenticationService implements UserDetailsService {
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
         );
     }
+
+    //회원가입 하는 method
+    public void createUser(User user){
+        userMapper.InsertUser(user);
+    }
+
 
     // Access Token을 생성하고 반환하는 method
     public String authenticateUser(String id, String pw) {
