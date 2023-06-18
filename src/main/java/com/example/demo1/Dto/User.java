@@ -7,8 +7,7 @@ public class User {
 
     private int Gender;
     private String Birth_date;
-    private String Job;
-    private int Prepare_month;
+
 
 
     //Getter & Setter_____________________________
@@ -19,23 +18,6 @@ public class User {
     public void setBirth_date(String birth_date) {
         Birth_date = birth_date;
     }
-
-    public String getJob() {
-        return Job;
-    }
-
-    public void setJob(String job) {
-        Job = job;
-    }
-
-    public int getPrepare_month() {
-        return Prepare_month;
-    }
-
-    public void setPrepare_month(int prepare_month) {
-        Prepare_month = prepare_month;
-    }
-
 
     public String getId() {
         return Id;

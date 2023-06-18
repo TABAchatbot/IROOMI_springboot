@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>표 표시 예시</title>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+
+    table, th, td {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+<table>
+  <thead>
+  <tr>
+    <th>Day</th>
+    <th>Study Hours</th>
+    <th>Topic</th>
+  </tr>
+  </thead>
+  <tbody id="dataBody">
+  <!-- 데이터 행들이 동적으로 추가될 위치 -->
+  </tbody>
+</table>
+
+<script>
+  fetch('/weeklydata')
+          .then(response => response.json())
+          .then(data => {
+
+            const dataBody = document.getElementById('dataBody');
+
+            data.forEach(item => {
+              const row = document.createElement('tr');
+
+              const dayCell = document.createElement('td');
+              dayCell.innerText = item.day;
+              row.appendChild(dayCell);
+
+              const studyHoursCell = document.createElement('td');
+              studyHoursCell.innerText = item.study_hours;
+              row.appendChild(studyHoursCell);
+
+              const topicCell = document.createElement('td');
+              topicCell.innerText = item.topic;
+              row.appendChild(topicCell);
+
+              dataBody.appendChild(row);
+            })
+          }
+          )
+</script>
+</body>
+</html>

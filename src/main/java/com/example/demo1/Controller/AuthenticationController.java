@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-
 public class AuthenticationController {
 
     @Autowired
@@ -38,10 +37,20 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody User user) {
+    public ResponseEntity<?> signup(@RequestBody /*AuthenticationRequest request*/ User user) {
         try {
+//            System.out.println(request.getId());
+//            System.out.println(request.getPassword());
+
+            System.out.println("회원가입 리퀘스트값 받기");
+            System.out.println(user.getId());
+            System.out.println(user.getPw());
+            System.out.println(user.getUsername());
+            System.out.println(user.getGender());
+            System.out.println(user.getBirth_date());
             //회원가입
-            authenticationService.createUser(user);
+//            authenticationService.createUser(user);
+
 
             return ResponseEntity.ok().build();
         } catch (AuthenticationException e) {

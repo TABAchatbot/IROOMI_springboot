@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>표 표시 예시</title>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+
+    table, th, td {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+<table>
+  <thead>
+  <tr>
+    <th>Day</th>
+    <th>Study Hours</th>
+    <th>Topic</th>
+  </tr>
+  </thead>
+  <tbody id="dataBody">
+  <!-- 데이터 행들이 동적으로 추가될 위치 -->
+  </tbody>
+</table>
+
+<script>
+  const data = [
+    {
+      "day": "월",
+      "study_hours": 2,
+      "topic": "국제관 출입문 알림서비스 개발 계획 수립"
+    },
+    {
+      "day": "화",
+      "study_hours": 2,
+      "topic": "프로젝트 범위 및 목표 세부화"
+    },
+    {
+      "day": "수",
+      "study_hours": 2,
+      "topic": "기술 조사 및 환경 구성 계획 수립"
+    },
+    {
+      "day": "목",
+      "study_hours": 2,
+      "topic": "데이터 모델링 및 스키마 설계"
+    },
+    {
+      "day": "금",
+      "study_hours": 2,
+      "topic": "API 설계 및 개발 시작"
+    }
+  ];
+
+  const dataBody = document.getElementById('dataBody');
+
+  data.forEach(item => {
+    const row = document.createElement('tr');
+
+    const dayCell = document.createElement('td');
+    dayCell.innerText = item.day;
+    row.appendChild(dayCell);
+
+    const studyHoursCell = document.createElement('td');
+    studyHoursCell.innerText = item.study_hours;
+    row.appendChild(studyHoursCell);
+
+    const topicCell = document.createElement('td');
+    topicCell.innerText = item.topic;
+    row.appendChild(topicCell);
+
+    dataBody.appendChild(row);
+  });
+</script>
+</body>
+</html>

@@ -14,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/bot")
+
 public class CustomBotController {
 
     @Value("${openai.model}")
